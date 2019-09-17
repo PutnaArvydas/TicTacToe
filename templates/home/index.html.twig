@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tic Tac Toe{% endblock %}
+
+
+
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    button{width: 40px; height: 40px;}
+    .restart{width: 160px; height: 40px;}
+</style>
+<h1 align="center">Tic Tac Toe</h1>
+    <form method="post" name="ticTacToeForm"  method="post">
+        <div align="center">
+            <table>
+            {% for i in 0..2 %}
+                <tr>
+                {% for t in 0..2 %}
+                    <td>
+                        <button  id="field_{{i}}{{t}}" name="fieldData"  onclick="return setButtonText({{i}}, {{t}});" type="submit">{{data[i][t]}}</button>
+                    </td>    
+                {% endfor %}
+                </tr>
+            {% endfor %}
+            </table>
+            
+            <br>
+            <button  class="restart" name="fieldData"  onclick="cleanAllFields();" type="submit">Start new game</button>
+            <br>
+            <h2>{{text}}</h2>
+        </div>
+    </form>
+            
+            
+    <script type="text/javascript" >
+        function setButtonText(i, t)
+        {
+            if(document.getElementById("field_" + i + t).innerText == ""){
+                document.getElementById("field_" + i + t).innerText = "X";
+                document.getElementById("field_" + i + t).value = getFieldsValueJson();
+                
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        
+        function getFieldsValueJson()
+        {
+           var dataArray = [];
+           for (var i = 0; i < 3; i++)
+           {
+               var rowArray = [];
+                for (var t = 0; t < 3; t++)
+                {
+                    rowArray[t] = document.getElementById("field_" + i + t).innerText;
+                } 
+                dataArray.push(rowArray);
+           }
+           
+           var value = JSON.stringify({
+                formData: dataArray
+            });
+            return JSON.stringify(value);
+        }
+        
+        function cleanAllFields()
+        {
+            for (var t = 0; t < 3; t++)
+                {
+                    document.getElementById("field_" + i + t).innerText = '';
+                }
+            getFieldsValueJson();
+        }
+        
+    </script>
+{% endblock %}
